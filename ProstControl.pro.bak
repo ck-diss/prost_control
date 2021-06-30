@@ -1,0 +1,51 @@
+
+QT       += core gui
+QT       += concurrent
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = ProstControl
+TEMPLATE = app
+
+
+SOURCES += \
+    main.cpp \
+    ads.cpp \
+    hdf5_custom.cpp \
+    controller.cpp
+
+HEADERS  += \
+    ads.h \
+    hdf5_custom.h \
+    main.h \
+    controller.h
+
+FORMS    += \
+    mainwindow.ui
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/lib/release/ -lphidget21
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/lib/debug/ -lphidget21
+else:unix: LIBS += -L$$PWD/../../../../../usr/lib/ -lphidget21
+
+INCLUDEPATH += $$PWD/../../../../../usr/include
+DEPENDPATH += $$PWD/../../../../../usr/include
+
+# bcm2835 library
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -lbcm2835
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../../usr/local/include
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/lib/libbcm2835.a
+
+
+#hdf5
+
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/hdf5/lib/ -lhdf5
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/hdf5/include
+DEPENDPATH += $$PWD/../../../../../usr/local/hdf5/include
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/hdf5/lib/libhdf5.a
